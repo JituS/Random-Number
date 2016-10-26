@@ -14,7 +14,7 @@ var translate = function (x, y) {
 var randomNumbers = [];
 
 var populateRandomNumbers = function(){
-	for(var i = 0; i < 100; i++){
+	for(var i = 0; i < 50; i++){
 		randomNumbers[i] = Math.floor(Math.random() * yRange);
 	};	
 }
@@ -27,31 +27,10 @@ var createChart = function () {
 		.range([0, INNER_WIDTH]);
 	_yScale = d3.scaleLinear()
 		.range([INNER_HEIGHT, 0]);
-	drawxAxis([0, 10], [0, 10]);
+	drawAxis([0, 10], [0, 10]);
 	var g = svg.append('g')
 		.attr('transform', translate(MARGIN, MARGIN))
 		.classed('chart', true);
-};
-
-var drawxAxis = function (xDomain, yDomain) {
-	_xScale.domain(xDomain);
-	_xAxis = d3.axisBottom(_xScale).ticks(10);
-	d3.select('svg').append('g')
-		.attr('transform', translate(MARGIN, HEIGHT - MARGIN))
-		.call(_xAxis)
-		.classed('xAxis', true);
-	_yScale.domain(yDomain);
-	_yAxis = d3.axisLeft(_yScale).ticks(Math.floor(yRange / 10));
-	d3.select('svg').append('g')
-		.attr('transform', translate(MARGIN, MARGIN))
-		.call(_yAxis)
-		.classed('yAxis', true);
-};
-
-var removeElements = function(elements){
-	for(var i = 0; i < elements.length; i++){
-		d3.select(elements[i]).remove();
-	};
 };
 
 var circleChart = function(g) {
@@ -86,25 +65,62 @@ var lineChart = function(g) {
 	g.append('path')
 		.attr('d', line(randomNumbers))
 		.classed('line', true)
+};
+
+var drawAxis = function (xDomain, yDomain) {
+	_xScale.domain(xDomain);
+	_xAxis = d3.axisBottom(_xScale).ticks(10);
+	d3.select('svg').append('g')
+		.attr('transform', translate(MARGIN, HEIGHT - MARGIN))
+		.call(_xAxis)
+		.classed('xAxis', true);
+	_yScale.domain(yDomain);
+	_yAxis = d3.axisLeft(_yScale).ticks(Math.floor(yRange / 10));
+	d3.select('svg').append('g')
+		.attr('transform', translate(MARGIN, MARGIN))
+		.call(_yAxis)
+		.classed('yAxis', true);
+};
+
+var removeElements = function(elements){
+	for(var i = 0; i < elements.length; i++){
+		d3.select(elements[i]).remove();
+	};
+};
+
+var drawGrid = function() {
+	d3.select('svg').selectAll('.xAxis .tick')
+		.append('line')
+		.attr('x1', 0)
+		.attr('y1', 0)
+		.attr('x2', 0)
+		.attr('y2', -INNER_HEIGHT - MARGIN)
+		.classed('grid', true);
+	d3.select('svg').selectAll('.yAxis .tick')
+		.append('line')
+		.attr('x1', 0)
+		.attr('y1', 0)
+		.attr('x2', INNER_WIDTH + MARGIN)
+		.attr('y2', 0)
+		.classed('grid', true);
 }
 
-var getGraphSpace = function (chartType) {
+var drawGraph = function (graphType) {
 	var newValue = Math.floor(Math.random() * yRange);
 	randomNumbers.shift();
 	randomNumbers.push(newValue);
 	removeElements(['.xAxis', '.yAxis', '.chart']);
-	drawxAxis([1, randomNumbers.length], [0, yRange])
-
+	drawAxis([0, randomNumbers.length], [0, yRange])
 	g = d3.select('svg').append('g')
 		.attr('transform', translate(MARGIN, MARGIN))
 		.classed('chart', true);
-
-	chartType(g);
+	drawGrid();
+	graphType(g);
 };
 
-var getChart = function(chartType) {
+var getChart = function(graphType) {
 	clearInterval(interval);
-	interval = setInterval(getGraphSpace, 250, chartType);
+	interval = setInterval(drawGraph, 200, graphType);
 }
 
 window.onload = function(){

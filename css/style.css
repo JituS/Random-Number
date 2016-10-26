@@ -1,9 +1,11 @@
 svg{
-	border:2px solid;
+	border:1px solid;
+	border-radius: 3px;
+	background-color: lightyellow;
 }
 
 body{
-	background-color: #cfcfcf;
+	background-color: #dfdfdf;
 }
 
 circle{
@@ -11,7 +13,8 @@ circle{
 }
 
 .grid{
-	stroke: lightgrey;
+	stroke: grey;
+	opacity: .3;
 }
 
 .line{
@@ -29,4 +32,6 @@ circle{
 
 .chartType:hover{
 	cursor: pointer;
+	background-color: grey;
+	color: white;
 }
