@@ -1,0 +1,32 @@
+svg{
+	border:2px solid;
+}
+
+body{
+	background-color: #cfcfcf;
+}
+
+circle{
+	stroke: black;
+}
+
+.grid{
+	stroke: lightgrey;
+}
+
+.line{
+	stroke: black;
+	fill:none;
+}
+
+.chartType{
+	border:2px solid;
+	width: 200px;
+	margin-bottom: 2px;
+	background-color: white;
+	font-size: 20px;
+}
+
+.chartType:hover{
+	cursor: pointer;
+}
