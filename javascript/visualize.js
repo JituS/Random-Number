@@ -93,7 +93,10 @@ var updateLineChart = function() {
 	d3.select('.line').remove();
 	d3.select('.chart').append('path')
 		.classed('line', true)
-		.attr('d', line(randomNumbers));
+		.attr('d', line(randomNumbers))
+		.attr("transform", null)
+		.transition()
+		.attr("transform", "translate(" + _xScale(-1) + ")");
 };
 
 var lineChart = function(g) {
