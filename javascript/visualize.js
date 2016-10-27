@@ -17,7 +17,13 @@ var populateRandomNumbers = function(){
 	for(var i = 0; i < 50; i++){
 		randomNumbers[i] = Math.floor(Math.random() * yRange);
 	};	
-}
+};
+
+var updateRandomNumbers = function() {
+	var newValue = Math.floor(Math.random() * yRange);
+	randomNumbers.shift();
+	randomNumbers.push(newValue);
+};
 
 var createChart = function () {
 	var svg = d3.select('.container').append('svg')
@@ -33,6 +39,17 @@ var createChart = function () {
 		.classed('chart', true);
 };
 
+var updateCircles = function() {
+	var circles = d3.selectAll('circle').data(randomNumbers);
+	circles
+		.attr('cx', function (number, index) { return _xScale(index + 1)})
+		.attr('cy', function (number) {return _yScale(number)});
+
+	circles.transition().duration(400)
+		.attr('cx', function(number, index){return _xScale(index)});
+	circles.selectAll('circle').exit().remove();
+};
+
 var circleChart = function(g) {
 	g.selectAll('circle').data(randomNumbers)
 		.enter().append('circle')
@@ -41,30 +58,56 @@ var circleChart = function(g) {
 	g.selectAll('circle')
 		.attr('cx', function (number, index) { return _xScale(index + 1)})
 		.attr('cy', function (number) {return _yScale(number)});
-	g.selectAll('circle').exit().remove();
-}
+	updateChart(updateCircles);
+};
+
+var updateBars = function(rect) {
+	var rect = g.selectAll('rect').data(randomNumbers);
+	rect.attr('height', function(number){return INNER_HEIGHT - _yScale(number)})
+		.attr('x', function(number, index){return _xScale(index + 1)})
+		.attr('y', function(number){return _yScale(number)});
+
+	rect.transition().duration(400)
+		.attr('x', function(number, index){return _xScale(index)});
+	rect.exit().remove();
+};
 
 var barGraph = function(g) {
-	g.selectAll('rect').data(randomNumbers).enter()
-		.append('rect')
-		.attr('width', 2)
+	var rect = g.selectAll('rect').data(randomNumbers).enter().append('rect');
+	rect.attr('width', 2)
 		.attr('height', function(number){return INNER_HEIGHT - _yScale(number)})
 		.attr('x', function(number, index){return _xScale(index + 1)})
 		.attr('y', function(number){return _yScale(number)});
+	updateChart(updateBars);
+};
+
+var line = d3.line()
+	.x(function (number, index) {
+		return _xScale(index + 1);
+	})
+	.y(function (number) {
+		return _yScale(number)
+	});
+
+var updateLineChart = function() {
+	d3.select('.line').remove();
+	d3.select('.chart').append('path')
+		.classed('line', true)
+		.attr('d', line(randomNumbers));
 };
 
 var lineChart = function(g) {
-	var line = d3.line()
-		.x(function (number, index) {
-			return _xScale(index + 1);
-		})
-		.y(function (number) {
-			return _yScale(number)
-		});
-
 	g.append('path')
 		.attr('d', line(randomNumbers))
-		.classed('line', true)
+		.classed('line', true);
+	updateChart(updateLineChart);
+};
+
+var updateChart = function(chart) {
+	interval = setInterval(function(){
+		updateRandomNumbers();
+		chart();
+	}, 500);
 };
 
 var drawAxis = function (xDomain, yDomain) {
@@ -103,12 +146,9 @@ var drawGrid = function() {
 		.attr('x2', INNER_WIDTH + MARGIN)
 		.attr('y2', 0)
 		.classed('grid', true);
-}
+};
 
 var drawGraph = function (graphType) {
-	var newValue = Math.floor(Math.random() * yRange);
-	randomNumbers.shift();
-	randomNumbers.push(newValue);
 	removeElements(['.xAxis', '.yAxis', '.chart']);
 	drawAxis([0, randomNumbers.length], [0, yRange])
 	g = d3.select('svg').append('g')
@@ -120,10 +160,10 @@ var drawGraph = function (graphType) {
 
 var getChart = function(graphType) {
 	clearInterval(interval);
-	interval = setInterval(drawGraph, 200, graphType);
-}
+	drawGraph(graphType);
+};
 
 window.onload = function(){
 	populateRandomNumbers();
 	createChart();
-}
+};
