@@ -9,16 +9,21 @@ body{
 }
 
 circle{
-	stroke: black;
+	stroke: #525b6b;
+	fill: #525b6b;
 }
 
 .grid{
-	stroke: grey;
+	stroke: #a6bad8;
 	opacity: .3;
 }
 
+rect{
+	fill: #525b6b;
+}
+
 .line{
-	stroke: black;
+	stroke: #525b6b;
 	fill:none;
 }
 

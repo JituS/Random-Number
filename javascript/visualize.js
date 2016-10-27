@@ -45,7 +45,8 @@ var updateCircles = function() {
 		.attr('cx', function (number, index) { return _xScale(index + 1)})
 		.attr('cy', function (number) {return _yScale(number)});
 
-	circles.transition().duration(400)
+	circles.transition().duration(220)
+		.ease(d3.easeLinear)
 		.attr('cx', function(number, index){return _xScale(index)});
 	circles.selectAll('circle').exit().remove();
 };
@@ -67,7 +68,8 @@ var updateBars = function(rect) {
 		.attr('x', function(number, index){return _xScale(index + 1)})
 		.attr('y', function(number){return _yScale(number)});
 
-	rect.transition().duration(400)
+	rect.transition().duration(220)
+		.ease(d3.easeLinear)
 		.attr('x', function(number, index){return _xScale(index)});
 	rect.exit().remove();
 };
@@ -83,7 +85,7 @@ var barGraph = function(g) {
 
 var line = d3.line()
 	.x(function (number, index) {
-		return _xScale(index + 1);
+		return _xScale(index +1);
 	})
 	.y(function (number) {
 		return _yScale(number)
@@ -94,8 +96,8 @@ var updateLineChart = function() {
 	d3.select('.chart').append('path')
 		.classed('line', true)
 		.attr('d', line(randomNumbers))
-		.attr("transform", null)
-		.transition()
+		.transition().duration(220)
+		.ease(d3.easeLinear)
 		.attr("transform", "translate(" + _xScale(-1) + ")");
 };
 
@@ -110,7 +112,7 @@ var updateChart = function(chart) {
 	interval = setInterval(function(){
 		updateRandomNumbers();
 		chart();
-	}, 500);
+	}, 250);
 };
 
 var drawAxis = function (xDomain, yDomain) {
@@ -169,4 +171,5 @@ var getChart = function(graphType) {
 window.onload = function(){
 	populateRandomNumbers();
 	createChart();
+	getChart(barGraph);
 };
