@@ -5,7 +5,7 @@ const WIDTH = 1000
 	, INNER_HEIGHT = HEIGHT - 2 * MARGIN
 	, yRange = 100;
 
-var _allQuotes, _xScale, _yScale, _xAxis, _yAxis, interval;
+var _allQuotes, _xScale, _yScale, _xAxis, _yAxis, interval, currentChart;
 
 var translate = function (x, y) {
 	return "translate(" + x + "," + y + ")";
@@ -14,7 +14,7 @@ var translate = function (x, y) {
 var randomNumbers = [];
 
 var populateRandomNumbers = function(){
-	for(var i = 0; i < 50; i++){
+	for(var i = 0; i < 100; i++){
 		randomNumbers[i] = Math.floor(Math.random() * yRange);
 	};	
 };
@@ -164,9 +164,21 @@ var drawGraph = function (graphType) {
 };
 
 var getChart = function(graphType) {
+	currentChart = graphType;
 	clearInterval(interval);
 	drawGraph(graphType);
 };
+
+var toggle = function() {
+	var toggleButton = document.querySelector('#toggle');
+	if(toggleButton.textContent == "Pause") {
+		clearInterval(interval);
+		toggleButton.textContent = "Play";
+	}else{
+		drawGraph(currentChart);
+		toggleButton.textContent = "Pause";
+	}
+}
 
 window.onload = function(){
 	populateRandomNumbers();

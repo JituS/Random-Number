@@ -29,9 +29,16 @@ rect{
 
 .chartType{
 	border:2px solid;
-	width: 200px;
+	width: auto;
 	margin-bottom: 2px;
 	background-color: white;
+	font-size: 20px;
+}
+
+.toggle{
+	border:2px solid;
+	width: auto;
+	margin-bottom: 2px;
 	font-size: 20px;
 }
 
