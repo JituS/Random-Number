@@ -3,24 +3,22 @@ const WIDTH = 1000
 	, MARGIN = 30
 	, INNER_WIDTH = WIDTH - 2 * MARGIN
 	, INNER_HEIGHT = HEIGHT - 2 * MARGIN
-	, yRange = 100;
+	, maxLimit = 100;
 
-var _allQuotes, _xScale, _yScale, _xAxis, _yAxis, interval, currentChart;
+var _xScale, _yScale, _xAxis, _yAxis, interval, currentChart, randomNumbers = [];
 
 var translate = function (x, y) {
 	return "translate(" + x + "," + y + ")";
 };
 
-var randomNumbers = [];
-
 var populateRandomNumbers = function(){
-	for(var i = 0; i < 100; i++){
-		randomNumbers[i] = Math.floor(Math.random() * yRange);
+	for(var i = 0; i <50; i++){
+		randomNumbers[i] = Math.floor(Math.random() * maxLimit);
 	};	
 };
 
 var updateRandomNumbers = function() {
-	var newValue = Math.floor(Math.random() * yRange);
+	var newValue = Math.floor(Math.random() * maxLimit);
 	randomNumbers.shift();
 	randomNumbers.push(newValue);
 };
@@ -51,12 +49,10 @@ var updateCircles = function() {
 	circles.selectAll('circle').exit().remove();
 };
 
-var circleChart = function(g) {
-	g.selectAll('circle').data(randomNumbers)
+var circleChart = function() {
+	d3.select('.chart').selectAll('circle').data(randomNumbers)
 		.enter().append('circle')
 		.attr('r', 2)
-
-	g.selectAll('circle')
 		.attr('cx', function (number, index) { return _xScale(index + 1)})
 		.attr('cy', function (number) {return _yScale(number)});
 	updateChart(updateCircles);
@@ -74,8 +70,8 @@ var updateBars = function(rect) {
 	rect.exit().remove();
 };
 
-var barGraph = function(g) {
-	var rect = g.selectAll('rect').data(randomNumbers).enter().append('rect');
+var barGraph = function() {
+	var rect = d3.select('.chart').selectAll('rect').data(randomNumbers).enter().append('rect');
 	rect.attr('width', 2)
 		.attr('height', function(number){return INNER_HEIGHT - _yScale(number)})
 		.attr('x', function(number, index){return _xScale(index + 1)})
@@ -101,29 +97,29 @@ var updateLineChart = function() {
 		.attr("transform", "translate(" + _xScale(-1) + ")");
 };
 
-var lineChart = function(g) {
-	g.append('path')
+var lineChart = function() {
+	d3.select('.chart').append('path')
 		.attr('d', line(randomNumbers))
 		.classed('line', true);
 	updateChart(updateLineChart);
 };
 
-var updateChart = function(chart) {
+var updateChart = function(chartForUpdateFn) {
 	interval = setInterval(function(){
 		updateRandomNumbers();
-		chart();
+		chartForUpdateFn();
 	}, 250);
 };
 
-var drawAxis = function (xDomain, yDomain) {
-	_xScale.domain(xDomain);
+var drawAxis = function () {
+	_xScale.domain([0, randomNumbers.length]);
 	_xAxis = d3.axisBottom(_xScale).ticks(10);
 	d3.select('svg').append('g')
 		.attr('transform', translate(MARGIN, HEIGHT - MARGIN))
 		.call(_xAxis)
 		.classed('xAxis', true);
-	_yScale.domain(yDomain);
-	_yAxis = d3.axisLeft(_yScale).ticks(Math.floor(yRange / 10));
+	_yScale.domain([0, maxLimit]);
+	_yAxis = d3.axisLeft(_yScale).ticks(Math.floor(maxLimit / 10));
 	d3.select('svg').append('g')
 		.attr('transform', translate(MARGIN, MARGIN))
 		.call(_yAxis)
@@ -153,20 +149,17 @@ var drawGrid = function() {
 		.classed('grid', true);
 };
 
-var drawGraph = function (graphType) {
+var drawGraph = function (graphTypeFn) {
+	currentChart = graphTypeFn;
+	document.querySelector('#toggle').textContent = "Pause";
+	clearInterval(interval);
 	removeElements(['.xAxis', '.yAxis', '.chart']);
-	drawAxis([0, randomNumbers.length], [0, yRange])
+	drawAxis();
 	g = d3.select('svg').append('g')
 		.attr('transform', translate(MARGIN, MARGIN))
 		.classed('chart', true);
 	drawGrid();
-	graphType(g);
-};
-
-var getChart = function(graphType) {
-	currentChart = graphType;
-	clearInterval(interval);
-	drawGraph(graphType);
+	graphTypeFn();
 };
 
 var toggle = function() {
@@ -183,5 +176,5 @@ var toggle = function() {
 window.onload = function(){
 	populateRandomNumbers();
 	createChart();
-	getChart(barGraph);
+	drawGraph(barGraph);
 };
