@@ -4,9 +4,6 @@ svg{
 	background-color: lightyellow;
 }
 
-body{
-	background-color: #dfdfdf;
-}
 
 circle{
 	stroke: #525b6b;
@@ -76,4 +73,35 @@ button{
 	width: 100px;
 	border-radius: 10px;
 	text-align: center;
+}
+
+#numberSize{
+	border: 1px solid black;
+	padding: 20px;
+}
+
+#numberSize div{
+	border: 1px solid black;
+	display: inline;
+	margin-left: 10px;
+	font-style: italic;
+	padding: 10px;
+	margin-top: 1px;
+}
+
+table{
+	border-radius: 3px;
+	border: 1px solid black;
+}
+
+tr{
+	background-color: grey;
+}
+
+td{
+	border-radius: 3px;
+	padding: 10px;
+	font-family: sans-serif;
+	font-weight: normal;
+	background-color: lightsteelblue;
 }
