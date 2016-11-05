@@ -3,7 +3,7 @@ var data = [1,2,3,4,5,6,7,8,9,10];
 function appendRow(scale, title) {
 	var table = d3.select('#tableContent table');
 	table = table.append('tr')
-	table.append('td').text(title);
+	table.append('td').text(title).classed('title', true);
 	table.selectAll('td').data(data, function(d){return d}).enter()
 		.append('td')
 		.text(function(d){return scale(d)});

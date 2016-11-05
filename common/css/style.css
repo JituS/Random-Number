@@ -91,17 +91,22 @@ button{
 
 table{
 	border-radius: 3px;
-	border: 1px solid black;
+	border: 1px solid steelblue;
 }
 
 tr{
 	background-color: grey;
 }
 
+.title{
+	text-align: left;
+	font-weight: bold;
+}
+
 td{
-	border-radius: 3px;
+	text-align: center;
 	padding: 10px;
 	font-family: sans-serif;
-	font-weight: normal;
+	font: 20px grey;
 	background-color: lightsteelblue;
 }
