@@ -2,19 +2,18 @@
 <html>
 <head>
 	<title>Random Graph</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="../common/css/style.css">
 </head>
 <body>
-<script type="text/javascript" src="javascript/lodash_4.16.4.min.js"></script>
-<script type="text/javascript" src="javascript/d3.v4.min.js"></script>
-<script type="text/javascript" src="javascript/visualize.js"></script>
+<script type="text/javascript" src="../common/javascript/lodash_4.16.4.min.js"></script>
+<script type="text/javascript" src="../common/javascript/d3.v4.min.js"></script>
+<script type="text/javascript" src="visualize.js"></script>
 <center>
 	<u><h2>Random Graph</h2></u>
 	<button class="chartType" onclick="drawGraph(barGraph)">Bar Chart</button>
 	<button class="chartType" onclick="drawGraph(lineChart)">Line Chart</button>
 	<button class="chartType" onclick="drawGraph(circleChart)">Scatter Plot</button>
 	<div class="container">
-		
 	</div>
 	<button id="toggle" class="toggle" onclick="toggle()">Pause</button>
 </center>

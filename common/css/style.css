@@ -47,3 +47,33 @@ rect{
 	background-color: grey;
 	color: white;
 }
+
+.container div{
+	text-align: right;
+	border: 1px solid white;
+	color: white;
+	border-radius: 10px;
+	margin-top: 2px;
+}
+
+button{
+	border-radius: 10px;
+}
+
+.buttonGroup{
+	margin-top: 10px;
+}
+
+.legand{
+	margin-top: 10px;
+}
+
+.legand div{
+	display: inline;
+	padding-left: 10px;
+	padding-right: 10px;
+	height: auto;
+	width: 100px;
+	border-radius: 10px;
+	text-align: center;
+}
