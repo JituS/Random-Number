@@ -9,13 +9,22 @@ function appendRow(scale, title) {
 		.text(function(d){return scale(d)});
 }
 
+function logN(d){
+	return d3.format(".4f")(d3.scaleLog()(d));
+}
+
+function logNRounded(d){
+	return d3.format("d")(d3.scaleLog()(d));
+}
+
 function visualize() {
 	var table = d3.select('#tableContent').append('table');
 	appendRow(d3.scaleLinear(), 'Title');
 	appendRow(d3.scaleLinear(), 'n');
 	appendRow(d3.scalePow().exponent(2), 'n Square');
-	appendRow(function(d){return d3.scaleLog()(d).toFixed(5)}, 'Log(n)');
-	appendRow(function(d){return Math.round(d3.scaleLog()(d))}, 'Log(n) Rounded');
+	appendRow(logN, 'Log(n)');
+	appendRow(logNRounded, 'Log(n) Rounded');
+	return table;
 }
 
 window.onload = visualize;
