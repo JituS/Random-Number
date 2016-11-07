@@ -82,7 +82,9 @@ button{
 
 #numberSize div{
 	border: 1px solid black;
-	display: inline;
+	float: left;
+	font-family: georgia;
+	font-weight: bold;
 	margin-left: 10px;
 	font-style: italic;
 	padding: 10px;

@@ -9,13 +9,9 @@ function appendRow(scale, title) {
 		.text(function(d){return scale(d)});
 }
 
-function nLogRound(number) {
-	return Math.round(nLog(number));
-}
-
 function visualize() {
 	var table = d3.select('#tableContent').append('table');
-	appendRow(function(d){return d}, 'Title');
+	appendRow(d3.scaleLinear(), 'Title');
 	appendRow(d3.scaleLinear(), 'n');
 	appendRow(d3.scalePow().exponent(2), 'n Square');
 	appendRow(function(d){return d3.scaleLog()(d).toFixed(5)}, 'Log(n)');

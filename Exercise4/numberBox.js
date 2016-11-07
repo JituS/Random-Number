@@ -1,7 +1,7 @@
 function visualize() {
 	var data = [0,1,2,3,4,5,6,7,8,9,10];
 	var svg = d3.select('#numberSize')
-		.style('width', '800px')
+		.style('width', '1000px')
 		.style('height', '300px');
 
 	var scale = d3.scaleLinear()
@@ -10,7 +10,7 @@ function visualize() {
 
 	svg.selectAll('div').data(data).enter()
 		.append('div')
-		.style('font-size', function(d, i){console.log(scale(d)); return scale(d) + 'px'})
+		.style('font-size', function(d, i){return scale(d) + 'px'})
 		.text(function(d, i){return d;})
 }
 
