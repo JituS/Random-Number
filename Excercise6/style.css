@@ -1,0 +1,27 @@
+#shapes circle{
+	stroke-width: 2px;
+	stroke: red;
+	fill: none;
+}
+
+#shapes rect{
+	stroke-width: 2px;
+	stroke: steelblue;
+	fill: none;
+}
+#shapes line{
+	stroke-width: 2px;
+	stroke: black;
+	fill: none;
+}
+#shapes polygon{
+	stroke-width: 2px;
+	stroke: green;
+	fill: none;
+}
+
+#shapes{
+	border:1px solid;
+	width: 600px;
+	border-radius: 5px;
+}
