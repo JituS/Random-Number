@@ -1,0 +1,21 @@
+path{
+	stroke: steelblue;
+	stroke-width: 2px;
+}
+
+circle{
+	stroke: steelblue;
+	fill: white;
+	stroke-width: 2px;
+}
+
+.yAxis path{
+	stroke: black;
+}
+.xAxis path{
+	stroke: black;
+}
+
+.tick line{
+	stroke: lightgrey;
+}
