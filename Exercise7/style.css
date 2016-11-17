@@ -19,3 +19,14 @@ circle{
 .tick line{
 	stroke: lightgrey;
 }
+
+.normalLine{
+	stroke:darkred;
+}
+.sineLine{
+	stroke:darkblue;
+}
+
+#container svg{
+	border: 1px solid black;
+}
