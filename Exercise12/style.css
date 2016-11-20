@@ -1,7 +1,6 @@
 circle{
 	stroke: steelblue;
 	fill: white;
-	stroke-width: 2px;
 }
 
 .yAxis path{
@@ -24,4 +23,8 @@ circle{
 .normalLine{
 	stroke:steelblue;
 	stroke-width:2px;
+}
+
+svg text{
+	font-family: sans-serif;
 }

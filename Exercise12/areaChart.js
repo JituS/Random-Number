@@ -25,27 +25,32 @@ function drawAxis(svg) {
 		.classed('yAxis', true);
 }
 
-var areaFunction = d3.area()
+var areaFunction = function(curveObject){
+	return d3.area()
 		.x(function(number, index){
-			console.log(xScale(number.x))
 			return xScale(number.x);
 		})
 		.y1(function(number, index){
 			return yScale(3 * Math.sin(number.y)+5);
 		})
-		.y0(HEIGHT-2*TOP_MARGIN);
+		.y0(HEIGHT-2*TOP_MARGIN)
+		.curve(curveObject);	
+};
 
-var lineFunction = d3.line()
-	.x(function(number, index){
-		return xScale(number.x);
-	})
-	.y(function(number, index){
-		return yScale(3 * Math.sin(number.y)+5);
-	});
+var lineFunction = function(curveObject) {
+	return d3.line()
+		.x(function(number, index){
+			return xScale(number.x);
+		})
+		.y(function(number, index){
+			return yScale(3 * Math.sin(number.y)+5);
+		})
+		.curve(curveObject);	
+};
 
-function drawLineChart(svg, data) {
+function drawLineChart(svg, data, curveObject) {
 	svg.append('path')
-		.attr('d', lineFunction(data))
+		.attr('d', lineFunction(curveObject.curve)(data))
 		.attr('stroke', 'black')
 		.attr('fill', 'none')
 		.classed('normalLine', true);
@@ -60,25 +65,37 @@ function appendCircle(svg, data){
 		.attr('r', 5);
 }
 
-function drawAreaChart(svg, data) {
+function drawAreaChart(svg, data, curveObject) {
 	svg.append('path').data([data])
-		.attr('d', areaFunction)
+		.attr('d', areaFunction(curveObject.curve))
 		.attr('stroke', 'black')
 		.attr('stroke-width', '0')
-		.attr('fill', 'lightsteelBlue')	
+		.attr('fill', 'steelBlue')	
+		.attr('opacity', .2)
 }
 
-var chartType = [drawAreaChart, drawLineChart, appendCircle];
 
-function drawChart(curveObj, tension) {
+function addText(svg, data, curveObject) {
+	svg.append('text')
+		.attr("x", WIDTH/2.5)
+	    .attr("y", 25)
+	    .text(curveObject.title);
+}
+
+var chartType = [drawAreaChart, drawLineChart, appendCircle, addText];
+
+function drawChart(curveType) {
+	curveType = (curveType) ? curveType  : { curve: d3.curveCardinal, title: 'Curve Linear' };
 	var svg = d3.select('#container')
 		.append('svg')
 		.attr('width', WIDTH)
 		.attr('height', HEIGHT);
 	drawAxis(svg);
 	chartType.forEach(function(eachType) {
-		eachType(svg, data);
+		eachType(svg, data, curveType);
 	});
 }
 
-window.onload = drawChart;
+window.onload = function(){
+	drawChart();
+}
