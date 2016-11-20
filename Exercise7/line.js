@@ -3,17 +3,6 @@ var WIDTH = 500,
 	TOP_MARGIN = 50, 
 	LEFT_MARGIN = 30;
 
-var curveArray = [ 
-	{ curve: d3.curveLinear, title: 'd3.curveLinear' },
-	{ curve: d3.curveLinearClosed, title: 'd3.curveLinearClosed' },
-	{ curve: d3.curveStepAfter, title: 'd3.curveStepAfter' },
-	{ curve: d3.curveBasis, title: 'd3.curveBasis' },
-	{ curve: d3.curveBundle, title: 'd3.curveBundle' },
-	{ curve: d3.curveCardinalClosed,title: 'd3.curveCardinalClosed' },
-	{ curve: d3.curveCardinal, title: 'd3.curveCardinal' },
-	{ curve: d3.curveCatmullRom, title: 'd3.curveCatmullRom' }
-];
-
 var givenData = [5, 9, 7, 5, 3, undefined, 4, 2, 3, 2], normalData = [], sinData = []
 
 givenData.forEach(function(d, i){
@@ -67,29 +56,47 @@ var sinlineFunction = function(curveFunction){
 		.curve(curveFunction)
 };
 
-function drawLineChart(curveObj) {
+var drawLine = function(svg, data, curveObj) {
+	svg.append('path')
+		.attr('d', lineFunction(curveObj.curve)(data))
+		.attr('stroke', 'black')
+		.attr('fill', 'none')
+		.classed('normalLine', true);
+};
+
+var drawSinLine = function(svg, data, curveObj) {
+	svg.append('path')
+		.attr('d', sinlineFunction(curveObj.curve)(data))
+		.attr('stroke', 'black')
+		.attr('fill', 'none')
+		.classed('sineLine', true);
+};
+
+var appendText = function(svg, text) {
+	svg.append('text')
+		.attr("x", WIDTH/3)
+	    .attr("y", 25)
+	    .text(text);
+}
+
+var actions = [drawLine, drawSinLine, appendText];
+
+function drawChart(curveObj) {
 	var svg = d3.select('#container')
 		.append('svg')
 		.attr('width', WIDTH)
 		.attr('height', HEIGHT)
 	drawAxis(svg);
-	svg.append('path')
-		.attr('d', lineFunction(curveObj.curve)(normalData))
-		.attr('stroke', 'black')
-		.attr('fill', 'none')
-		.classed('normalLine', true);
-	svg.append('path')
-		.attr('d', sinlineFunction(curveObj.curve)(sinData))
-		.attr('stroke', 'black')
-		.attr('fill', 'none')
-		.classed('sineLine', true);
+	drawLine(svg, normalData, curveObj);
+	drawSinLine(svg, sinData, curveObj);
+	appendText(svg, curveObj.title);
 	return svg;
 }
 
 function visualize() {
 	var w = window.WIDTH;
 	document.querySelector('#container').setAttribute('width', w);
-	curveArray.forEach(drawLineChart);
+	drawChart({ curve: d3.curveLinear, title: 'Curve Linear' })
 }
 
 window.onload = visualize;

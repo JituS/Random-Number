@@ -1,8 +1,3 @@
-path{
-	stroke-width: 2px;
-	stroke:none;
-}
-
 circle{
 	stroke: steelblue;
 	fill: white;
@@ -11,26 +6,22 @@ circle{
 
 .yAxis path{
 	stroke: black;
+	stroke-width:2px;
 }
 .xAxis path{
 	stroke: black;
+	stroke-width:2px;
 }
 
 .tick line{
 	stroke: lightgrey;
 }
 
-.normalLine{
-	stroke:darkred;
-}
-.sineLine{
-	stroke:darkblue;
-}
-
 #container svg{
 	border: 1px solid black;
 }
 
-svg text{
-	font-family: sans-serif;
+.normalLine{
+	stroke:steelblue;
+	stroke-width:2px;
 }
